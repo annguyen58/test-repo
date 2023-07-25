@@ -2,7 +2,7 @@
 
 1. Install Docker and Docker Compose in your system
 
-If you prefer a visual Docker management tool, you can also install Docker Desktop.
+   If you prefer a visual Docker management tool, you can also install Docker Desktop.
 
 2. Set up your local environment. Required to work correctly inside the IDE
 
@@ -25,14 +25,14 @@ pre-commit install
 
 3. Run Airflow inside Docker containers
 
-This project needs to be run with Docker. Please avoid attempting to run the project with a local Python virtual environment, as the Dockerfile already contains the necessary environment and variable configuration commands for the project.
+   This project needs to be run with Docker. Please avoid attempting to run the project with a local Python virtual environment, as the Dockerfile already contains the necessary environment and variable configuration commands for the project.
 
 ```bash
 # Set environment variables for running Airflow inside Docker containers
 export AIRFLOW_UID=501  # You can find out your user ID by running: id -u
 export AIRFLOW_PROJ_DIR=<your_path_to_local_project>
 export GOOGLE_APPLICATION_CREDENTIALS=<path_to_your_google_credentials_file>
-# Note: The Google credentials file should have the extension .json.
+# The Google credentials file should have the extension .json.
 # To ensure the program runs smoothly, you should run the 'export' command again every time you create a new terminal or reopen the IDE, even when running tests.
 
 # Move to the 'devops' folder
@@ -53,23 +53,27 @@ docker ps
 make stop
 ```
 
-4. Login into Airflow UI \
-   http://localhost:8080/home
+4. Login into Airflow UI
 
-Login: airflow \
-Password: airflow
+   http://localhost:8080/home\
+   Login: airflow \
+   Password: airflow
 
-5. Create your own access key
+5. Setting up your access key and configure gateway
 
-- Login here https://nimbus2-data-pipeline.appspot.com \
-  If this is your first time, you need to sign up with your leadplus google account. After that administrators will be able to give you permissions
-- Access Site administration and pay attention to these two menu items: "Access tokens" and "Resource access".
-- In "Access tokens", create your own access key\
-  Make sure to set the limitation (select the "Inactive" radio button) for your access key/token under "All accounts accessible".
-- In "Resource access", you will need to associate your access key with the Publisher's resources.
-- Copy the access key/token to your local Airflow connection setup at the record where the Connd Id is "http_gateway"
+- Step 1 : Login to the Nimbus2 Data Pipeline\
+  Go to https://nimbus2-data-pipeline.appspot.com and if it's your first time, sign up using your leadplus Google account. After that administrators will be able to give you permissions.
+- Step 2 : Access Site Administration and explore menu items\
+  Navigate to the Site Administration section and focus on the `Access tokens` and `Resource access` menu items.
+- Step 3 : Create your own access key\
+  In `Access tokens`, generate your own access key. Remember to set the limitation by selecting the `Inactive` radio button for your access key/token under `All accounts accessible`.
+- Step 4 : Associate your access key with Publisher's Resources\
+  In `Resource access`, you will need to associate your access key/token with the Publisher's resources. `Resource access` is about determining specific resources (endpoints or data) within the production API that your application or system needs to access to perform its tasks. Associating your access key/token with these resources helps limit the number of API requests from the development environment. Keeping the API requests low in the development environment is crucial to adhere to the request limits of the external API and avoid any disruptions to the provider's system or services.
+- Step 5 : Configure access key for Gateway\
+  The Gateway serves as a local proxy for all external APIs, enhancing security and controlling API requests from the development environment.\
+  Copy the access key/token you generated in Step 3. Then configure it for the local Airflow connection setup at the record where the `Connd Id` is `http_gateway`. This allows your Gateway to authenticate and interact with external APIs on behalf of your application while staying within defined access limits.
 
-Now you can run pipelines in Airflow. If you see that the pipelines are running successfully, the setup is complete.
+  Now you can run pipelines in Airflow. If you see that the pipelines are running successfully, the setup is complete.
 
 ##### Docker tips
 
